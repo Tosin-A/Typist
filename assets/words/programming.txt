@@ -1,0 +1,20 @@
+const result = array.filter(item => item.value > 0)
+function greet(name) { return `Hello, ${name}!`; }
+for (let i = 0; i < 10; i++) { console.log(i); }
+const sum = numbers.reduce((acc, n) => acc + n, 0);
+if (condition) { doSomething(); } else { doOther(); }
+const user = { name: "Alice", age: 30, active: true };
+async function fetchData(url) { const res = await fetch(url); return res.json(); }
+class Animal { constructor(name) { this.name = name; } }
+const doubled = list.map(x => x * 2).filter(x => x < 100);
+try { parse(input); } catch (err) { console.error(err.message); }
+def calculate_average(numbers): return sum(numbers) / len(numbers)
+for index, value in enumerate(items): print(f"{index}: {value}")
+class Person: def __init__(self, name, age): self.name = name; self.age = age
+with open("file.txt", "r") as f: content = f.read()
+if __name__ == "__main__": main()
+result = [x ** 2 for x in range(10) if x % 2 == 0]
+def merge_dicts(a, b): return {**a, **b}
+raise ValueError(f"Expected int, got {type(value).__name__}")
+import os; path = os.path.join(os.path.expanduser("~"), ".config")
+sorted_items = sorted(data, key=lambda x: x["score"], reverse=True)

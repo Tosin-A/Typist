@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Typist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="dark">
+
+<!-- ──────────────────────── HOME ──────────────────────────── -->
+<div id="screen-home" class="screen active">
+  <div class="home-layout">
+
+    <header class="home-header">
+      <div class="logo">
+        <span class="logo-mark">T</span>
+        <span class="logo-text">Typist</span>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn" id="btn-analytics-open" title="Insights">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>Insights</span>
+        </button>
+        <button class="nav-btn" id="btn-hand-guide-open" title="Hand Guide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0M14 10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v2M10 10.5V6a2 2 0 00-2-2v0a2 2 0 00-2 2v8"/>
+            <path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8H14c-3.5 0-6-1.343-8-4l-3.5-3.5"/>
+          </svg>
+          <span>Hand Guide</span>
+        </button>
+        <button class="nav-btn icon-only" id="btn-settings-open" title="Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+          </svg>
+        </button>
+      </nav>
+    </header>
+
+    <div class="time-greeting" id="time-greeting"></div>
+
+    <div class="home-stats">
+      <div class="stat-primary">
+        <span class="stat-primary-val" id="home-wpm">—</span>
+        <span class="stat-primary-lbl">last WPM</span>
+      </div>
+      <div class="stat-secondary-group">
+        <div class="stat-mini">
+          <span class="stat-mini-val" id="home-streak">0</span>
+          <span class="stat-mini-lbl">day streak</span>
+        </div>
+        <div class="stat-mini-divider"></div>
+        <div class="stat-mini">
+          <span class="stat-mini-val" id="home-level">—</span>
+          <span class="stat-mini-lbl">level</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem key strip — shown only when errors exist -->
+    <div class="focus-strip" id="focus-strip" style="display:none">
+      <span class="focus-strip-label">Today's focus</span>
+      <div class="focus-keys" id="focus-keys-row"></div>
+      <button class="drill-btn" id="btn-adaptive">Drill these</button>
+    </div>
+
+    <div class="quote-block" id="home-quote">
+      <span class="quote-mark">"</span>
+      <span class="quote-text">...</span>
+    </div>
+
+    <div class="chart-section">
+      <div class="section-label">Progress — last 30 days</div>
+      <canvas id="progress-chart" height="110"></canvas>
+      <div class="chart-empty" id="chart-empty">Complete your first session to see progress</div>
+    </div>
+
+    <div class="home-actions">
+      <button class="btn-primary" id="btn-start">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><polygon points="5,3 19,12 5,21"/></svg>
+        Start Practice
+      </button>
+      <button class="btn-ghost" id="btn-speed-test">60s Speed Test</button>
+      <button class="btn-ghost dim" id="btn-skip">Skip today</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── TYPING ──────────────────────────── -->
+<div id="screen-typing" class="screen">
+  <div class="typing-layout">
+
+    <div class="typing-topbar">
+      <div class="session-badges">
+        <span class="badge accent" id="typing-mode-badge">sentences</span>
+        <span class="badge" id="typing-difficulty-badge">intermediate</span>
+        <span class="badge adapted" id="typing-adapted-badge" style="display:none">adapted</span>
+      </div>
+      <div class="live-stats">
+        <div class="live-stat">
+          <span class="live-val" id="live-wpm">0</span>
+          <span class="live-lbl">WPM</span>
+        </div>
+        <div class="live-stat">
+          <span class="live-val" id="live-acc">100</span>
+          <span class="live-lbl">ACC</span>
+        </div>
+        <div class="live-stat">
+          <span class="live-val" id="live-time">0:00</span>
+          <span class="live-lbl">TIME</span>
+        </div>
+        <div class="live-stat countdown-stat" id="live-countdown-wrap" style="display:none">
+          <span class="live-val countdown-val" id="live-countdown">60</span>
+          <span class="live-lbl">LEFT</span>
+        </div>
+      </div>
+      <button class="btn-escape" id="btn-escape">esc</button>
+    </div>
+
+    <div class="typing-arena">
+      <div class="typing-text" id="typing-text" aria-label="Practice text"></div>
+      <div class="typing-hint" id="cursor-hint">start typing…</div>
+      <textarea
+        id="typing-input"
+        class="typing-input"
+        autocomplete="off" autocorrect="off"
+        autocapitalize="off" spellcheck="false"
+        aria-label="Type here"
+      ></textarea>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="typing-progress-fill"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── RESULTS ──────────────────────────── -->
+<div id="screen-results" class="screen">
+  <div class="results-layout">
+
+    <div class="results-header">
+      <div class="results-title-row">
+        <h1 class="results-title" id="results-title">Session Complete</h1>
+        <div class="new-best-badge" id="new-best-badge" style="display:none">🏆 New best</div>
+      </div>
+      <div class="results-header-right">
+        <div class="streak-pill" id="results-streak-badge">🔥 0 day streak</div>
+        <div class="streak-milestone-msg" id="streak-milestone-msg" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="results-scores">
+      <div class="score-hero">
+        <span class="score-hero-val" id="res-wpm">0</span>
+        <span class="score-hero-lbl">WPM</span>
+      </div>
+      <div class="score-secondary">
+        <div class="score-item">
+          <span class="score-item-val" id="res-acc">0%</span>
+          <span class="score-item-lbl">Accuracy</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-val" id="res-time">0s</span>
+          <span class="score-item-lbl">Time</span>
+        </div>
+        <div class="score-item">
+          <span class="score-item-val" id="res-errors">0</span>
+          <span class="score-item-lbl">Mistakes</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session fault keys -->
+    <div class="fault-block" id="session-faults" style="display:none">
+      <div class="fault-block-header">
+        <span class="section-label">Keys that tripped you up</span>
+        <span class="fault-note">These are already woven into your next session</span>
+      </div>
+      <div class="fault-keys" id="faults-keys"></div>
+    </div>
+
+    <div class="results-chart-wrap">
+      <div class="section-label">Your progress</div>
+      <canvas id="results-chart" height="90"></canvas>
+    </div>
+
+    <div class="results-actions">
+      <button class="btn-primary" id="btn-practice-again">Practice Again</button>
+      <button class="btn-outline" id="btn-practice-adaptive">Drill Weak Keys</button>
+      <button class="btn-ghost" id="btn-go-home">Home</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── SETTINGS ──────────────────────────── -->
+<div id="screen-settings" class="screen">
+  <div class="panel-layout">
+
+    <div class="panel-header">
+      <button class="back-btn" id="btn-settings-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h2 class="panel-title">Settings</h2>
+    </div>
+
+    <div class="panel-body">
+
+      <section class="setting-section">
+        <h3 class="setting-section-title">Practice Mode</h3>
+        <div class="option-grid" id="mode-grid">
+          <button class="option-btn active" data-mode="sentences">Real Sentences</button>
+          <button class="option-btn" data-mode="common">Common Words</button>
+          <button class="option-btn" data-mode="programming">Programming</button>
+          <button class="option-btn" data-mode="custom">Custom Text</button>
+        </div>
+        <textarea
+          id="custom-text-input"
+          class="custom-textarea"
+          placeholder="Paste your own text here…"
+          rows="3"
+        ></textarea>
+      </section>
+
+      <section class="setting-section">
+        <h3 class="setting-section-title">Text Case</h3>
+        <div class="option-grid tri" id="case-grid">
+          <button class="option-btn active" data-case="sentence">Aa Sentence</button>
+          <button class="option-btn" data-case="lower">aa lowercase</button>
+          <button class="option-btn" data-case="upper">AA UPPERCASE</button>
+        </div>
+      </section>
+
+      <section class="setting-section">
+        <h3 class="setting-section-title">Session Length</h3>
+        <div class="option-grid tri" id="length-grid">
+          <button class="option-btn" data-length="short">Short</button>
+          <button class="option-btn active" data-length="medium">Medium</button>
+          <button class="option-btn" data-length="long">Long</button>
+        </div>
+        <p class="setting-hint">Short ≈ 80–120 chars &nbsp;·&nbsp; Medium ≈ 200–300 &nbsp;·&nbsp; Long ≈ 400–650</p>
+      </section>
+
+      <section class="setting-section">
+        <h3 class="setting-section-title">Appearance &amp; Behaviour</h3>
+        <div class="toggle-list">
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">Include punctuation</span>
+              <span class="toggle-desc">Commas, periods, apostrophes in practice text</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-punctuation" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">Dark mode</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-dark" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">Sound feedback</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-sound" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-label">Auto-launch on startup</span>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="toggle-autostart" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <div class="settings-footer">
+        <button class="btn-primary" id="btn-save-settings">Save Settings</button>
+        <span class="saved-msg" id="settings-saved-msg">Saved</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────────────── ANALYTICS ──────────────────────────── -->
+<div id="screen-analytics" class="screen">
+  <div class="panel-layout">
+
+    <div class="panel-header">
+      <button class="back-btn" id="btn-analytics-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h2 class="panel-title">Insights</h2>
+    </div>
+
+    <div class="panel-body" id="analytics-body">
+      <div class="loading-state">Loading your data…</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── HAND GUIDE ──────────────────────────── -->
+<div id="screen-hand-guide" class="screen">
+  <div class="panel-layout">
+
+    <div class="panel-header">
+      <button class="back-btn" id="btn-hand-guide-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h2 class="panel-title">Hand Placement</h2>
+    </div>
+
+    <div class="panel-body hand-guide-body">
+
+      <p class="guide-intro">
+        Rest your fingers on the <strong>home row</strong>. Return to it after every keystroke.
+        Each colour represents one finger — highlighted keys are your current weak spots.
+      </p>
+
+      <div class="keyboard-wrap" id="keyboard-svg-container"></div>
+
+      <div class="finger-legend" id="finger-legend"></div>
+
+      <section class="setting-section">
+        <h3 class="setting-section-title">Home Row</h3>
+        <div class="home-row-visual">
+          <div class="home-key lp">A</div>
+          <div class="home-key lr">S</div>
+          <div class="home-key lm">D</div>
+          <div class="home-key li">F<span class="bump"></span></div>
+          <div class="home-key gap-key">·</div>
+          <div class="home-key ri">J<span class="bump"></span></div>
+          <div class="home-key rm">K</div>
+          <div class="home-key rr">L</div>
+          <div class="home-key rp">;</div>
+        </div>
+        <div class="home-row-labels">
+          <span>L. Pinky</span><span>L. Ring</span><span>L. Middle</span>
+          <span>L. Index</span><span>Thumb</span>
+          <span>R. Index</span><span>R. Middle</span><span>R. Ring</span><span>R. Pinky</span>
+        </div>
+      </section>
+
+      <section class="setting-section tips-section">
+        <h3 class="setting-section-title">Technique</h3>
+        <ul class="tips-list">
+          <li>Curve your fingers — don't lay them flat on the keys</li>
+          <li>Keep wrists slightly elevated while typing, not resting</li>
+          <li>Use your thumb for Space only — not your index finger</li>
+          <li>Press Shift with the opposite hand's pinky</li>
+          <li>Eyes on screen, not your hands — trust muscle memory</li>
+          <li>After each key, return your finger to home position</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<canvas id="confetti-canvas"></canvas>
+<script src="app.js"></script>
+</body>
+</html>
