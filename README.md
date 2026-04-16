@@ -1,7 +1,7 @@
-# Typist — Daily Typing Practice
+# Typist — Daily Typing Practice 
 
 **A lightweight, offline-first desktop app for short daily typing practice.**  
-Designed to feel like a frictionless morning habit: open your laptop, type for a minute or two, then move on—while tracking speed, accuracy, and improvement over time.
+Feels like a frictionless morning habit: open your laptop, type for a minute or two, then move on—while tracking speed, accuracy, and improvement over time.
 
 ---
 
