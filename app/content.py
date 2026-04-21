@@ -1,9 +1,12 @@
 import os
 import random
 import re
+import sys
 from pathlib import Path
 
-_ASSETS = Path(__file__).parent.parent / "assets" / "words"
+# Works both as a script and when bundled by PyInstaller (_MEIPASS)
+_BASE   = Path(getattr(sys, "_MEIPASS", Path(__file__).parent.parent))
+_ASSETS = _BASE / "assets" / "words"
 
 LENGTH_TARGETS: dict[str, dict[str, int]] = {
     "short":  {"beginner": 80,  "intermediate": 120, "advanced": 180},
@@ -164,6 +167,61 @@ def generate_adaptive_text(
             break
         result.append(word)
         count += len(word) + 1
+    return " ".join(result)
+
+
+def generate_key_drill(
+    target_keys: list[str],
+    difficulty: str,
+    target_chars: int = 180,
+) -> str:
+    """
+    Type-Monkey-style drill: nearly every token contains one of the target keys.
+    Mixes systematic bigrams/trigrams built around each key with real matching words.
+    """
+    keys = [k.lower() for k in target_keys if k.strip() and k.isalpha()]
+    if not keys:
+        return generate_common_words(difficulty, target_chars)
+
+    ALL_ALPHA = list("abcdefghijklmnopqrstuvwxyz")
+    VOWELS = list("aeiou")
+
+    tokens: list[str] = []
+    for k in keys:
+        # Bigrams: target key paired with every other letter (both orders)
+        for c in ALL_ALPHA:
+            if c != k:
+                tokens.append(k + c)        # ka, kb, kc …
+                tokens.append(c + k)        # ak, bk, ck …
+        # Trigrams: key sandwiching vowels
+        for v in VOWELS:
+            if v != k:
+                tokens.append(k + v + k)    # kak, kek, kik …
+                tokens.append(v + k + v)    # aka, eke, iki …
+        # Cross-key sequences when multiple keys selected
+        for k2 in keys:
+            if k2 != k:
+                tokens.extend([k + k2, k2 + k, k + k2 + k])
+
+    # Real words containing target keys — prefer short words for fast drilling
+    words = _all_words()
+    real_words = sorted(
+        [w for w in words if any(c in w.lower() for c in keys) and 2 <= len(w) <= 6],
+        key=len,
+    )
+    random.shuffle(real_words)
+
+    pool = real_words[:50] + tokens
+    random.shuffle(pool)
+
+    result: list[str] = []
+    count = 0
+    for token in pool * 20:
+        if count >= target_chars:
+            break
+        result.append(token)
+        count += len(token) + 1
+
     return " ".join(result)
 
 

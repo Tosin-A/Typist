@@ -4,7 +4,9 @@ import webview
 
 from app.api import Api
 
-UI_PATH = os.path.join(os.path.dirname(__file__), "ui", "index.html")
+# When bundled by PyInstaller, files live under sys._MEIPASS
+BASE_DIR = getattr(sys, "_MEIPASS", os.path.dirname(os.path.abspath(__file__)))
+UI_PATH  = os.path.join(BASE_DIR, "ui", "index.html")
 
 
 def main() -> None:
@@ -23,6 +25,7 @@ def main() -> None:
         on_top=False,
         frameless=False,
         easy_drag=False,
+        fullscreen=True,
     )
 
     webview.start(

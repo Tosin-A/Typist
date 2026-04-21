@@ -11,38 +11,130 @@
 </head>
 <body class="dark">
 
-<!-- ──────────────────────── HOME ──────────────────────────── -->
-<div id="screen-home" class="screen active">
-  <div class="home-layout">
+<!-- ──────────────────── PERSISTENT SIDEBAR ──────────────────── -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <span class="sidebar-logo-mark">T</span>
+    <span class="sidebar-logo-text">Typist</span>
+  </div>
 
-    <header class="home-header">
-      <div class="logo">
-        <span class="logo-mark">T</span>
-        <span class="logo-text">Typist</span>
+  <div class="sidebar-nav">
+    <button class="sidebar-btn" data-screen="learn" id="nav-learn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+      </svg>
+      <span>Learn</span>
+    </button>
+    <button class="sidebar-btn" data-screen="home" id="nav-practice">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/>
+      </svg>
+      <span>Practice</span>
+    </button>
+    <button class="sidebar-btn" data-screen="leaderboard" id="nav-leaderboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 9H4.5a2.5 2.5 0 010-5H6"/><path d="M18 9h1.5a2.5 2.5 0 000-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0012 0V2z"/>
+      </svg>
+      <span>Leaderboard</span>
+    </button>
+    <button class="sidebar-btn" data-screen="profile" id="nav-profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="5"/><path d="M3 21v-1a9 9 0 0118 0v1"/>
+      </svg>
+      <span>Profile</span>
+    </button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-user" id="sidebar-user" style="display:none">
+      <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+      <div class="sidebar-user-info">
+        <span class="sidebar-username" id="sidebar-username">—</span>
+        <span class="sidebar-rank" id="sidebar-rank">Novice</span>
       </div>
-      <nav class="header-nav">
-        <button class="nav-btn" id="btn-analytics-open" title="Insights">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-            <line x1="6" y1="20" x2="6" y2="14"/>
-          </svg>
-          <span>Insights</span>
-        </button>
-        <button class="nav-btn" id="btn-hand-guide-open" title="Hand Guide">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M18 11V6a2 2 0 00-2-2v0a2 2 0 00-2 2v0M14 10V4a2 2 0 00-2-2v0a2 2 0 00-2 2v2M10 10.5V6a2 2 0 00-2-2v0a2 2 0 00-2 2v8"/>
-            <path d="M18 8a2 2 0 114 0v6a8 8 0 01-8 8H14c-3.5 0-6-1.343-8-4l-3.5-3.5"/>
-          </svg>
-          <span>Hand Guide</span>
-        </button>
-        <button class="nav-btn icon-only" id="btn-settings-open" title="Settings">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="12" cy="12" r="3"/>
-            <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
-          </svg>
-        </button>
-      </nav>
-    </header>
+    </div>
+    <div class="sidebar-xp-bar" id="sidebar-xp-bar" style="display:none">
+      <div class="sidebar-xp-fill" id="sidebar-xp-fill"></div>
+    </div>
+    <button class="sidebar-settings-btn" id="btn-sidebar-settings" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<!-- ──────────────────────── ONBOARDING ──────────────────────── -->
+<div id="screen-onboarding" class="screen screen-fullscreen">
+  <div class="onboarding-layout">
+
+    <!-- Step 1: Welcome + username -->
+    <div class="onboarding-step active" id="ob-step-1">
+      <div class="onboarding-brand">
+        <div class="ob-logo-mark">T</div>
+        <h1 class="ob-title">Typist</h1>
+        <p class="ob-subtitle">Built for people who build things.</p>
+      </div>
+      <div class="ob-form">
+        <label class="ob-label">Choose a username</label>
+        <input type="text" id="ob-username-input" class="ob-input"
+          placeholder="e.g. swift_coder" maxlength="20"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <p class="ob-input-hint" id="ob-username-hint">3–20 characters, letters, numbers, underscores</p>
+        <button class="btn-primary ob-btn" id="btn-ob-next-1">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Assessment intro -->
+    <div class="onboarding-step" id="ob-step-2">
+      <div class="ob-assess-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M7 16h10"/></svg></div>
+      <h2 class="ob-step-title">Quick baseline test</h2>
+      <p class="ob-step-desc">Type for 30 seconds so we can personalise your learning path. No pressure — just type naturally.</p>
+      <button class="btn-primary ob-btn" id="btn-ob-start-assessment">Start 30s test</button>
+      <button class="btn-ghost ob-skip" id="btn-ob-skip-assessment">Skip — I'll start at the beginning</button>
+    </div>
+
+    <!-- Step 3: Assessment done -->
+    <div class="onboarding-step" id="ob-step-3">
+      <div class="ob-result-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+      <h2 class="ob-step-title">Your baseline</h2>
+      <div class="ob-baseline-wpm" id="ob-baseline-display">0 <span>WPM</span></div>
+      <p class="ob-step-desc" id="ob-track-recommendation">We'll start you on the General track.</p>
+      <button class="btn-primary ob-btn" id="btn-ob-finish">Let's go →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── LEARN ───────────────────────────── -->
+<div id="screen-learn" class="screen">
+  <div class="learn-layout">
+
+    <div class="learn-header">
+      <div>
+        <h1 class="learn-title">Learn</h1>
+        <p class="learn-subtitle" id="learn-subtitle">Pick up where you left off</p>
+      </div>
+      <div class="learn-header-stats" id="learn-header-stats"></div>
+    </div>
+
+    <div class="track-tabs" id="track-tabs">
+      <button class="track-tab active" data-track="general">General</button>
+      <button class="track-tab" data-track="developer">Developer</button>
+      <button class="track-tab code-tab" data-track="code">Code</button>
+    </div>
+
+    <div class="lesson-list" id="lesson-list">
+      <div class="loading-state">Loading curriculum…</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── HOME (PRACTICE) ─────────────────── -->
+<div id="screen-home" class="screen">
+  <div class="home-layout">
 
     <div class="time-greeting" id="time-greeting"></div>
 
@@ -64,7 +156,6 @@
       </div>
     </div>
 
-    <!-- Problem key strip — shown only when errors exist -->
     <div class="focus-strip" id="focus-strip" style="display:none">
       <span class="focus-strip-label">Today's focus</span>
       <div class="focus-keys" id="focus-keys-row"></div>
@@ -95,7 +186,7 @@
 </div>
 
 <!-- ──────────────────────── TYPING ──────────────────────────── -->
-<div id="screen-typing" class="screen">
+<div id="screen-typing" class="screen screen-fullscreen">
   <div class="typing-layout">
 
     <div class="typing-topbar">
@@ -103,6 +194,7 @@
         <span class="badge accent" id="typing-mode-badge">sentences</span>
         <span class="badge" id="typing-difficulty-badge">intermediate</span>
         <span class="badge adapted" id="typing-adapted-badge" style="display:none">adapted</span>
+        <span class="badge lesson" id="typing-lesson-badge" style="display:none">lesson</span>
       </div>
       <div class="live-stats">
         <div class="live-stat">
@@ -117,12 +209,19 @@
           <span class="live-val" id="live-time">0:00</span>
           <span class="live-lbl">TIME</span>
         </div>
+        <div class="live-stat" id="live-target-wrap" style="display:none">
+          <span class="live-val target-val" id="live-target">—</span>
+          <span class="live-lbl">TARGET</span>
+        </div>
         <div class="live-stat countdown-stat" id="live-countdown-wrap" style="display:none">
           <span class="live-val countdown-val" id="live-countdown">60</span>
           <span class="live-lbl">LEFT</span>
         </div>
       </div>
-      <button class="btn-escape" id="btn-escape">esc</button>
+      <div class="topbar-right">
+        <button class="btn-retry-lesson" id="btn-retry-lesson" style="display:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg> Retry</button>
+        <button class="btn-escape" id="btn-escape"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg> Back</button>
+      </div>
     </div>
 
     <div class="typing-arena">
@@ -151,10 +250,10 @@
     <div class="results-header">
       <div class="results-title-row">
         <h1 class="results-title" id="results-title">Session Complete</h1>
-        <div class="new-best-badge" id="new-best-badge" style="display:none">🏆 New best</div>
+        <div class="new-best-badge" id="new-best-badge" style="display:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg> New best</div>
       </div>
       <div class="results-header-right">
-        <div class="streak-pill" id="results-streak-badge">🔥 0 day streak</div>
+        <div class="streak-pill" id="results-streak-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-icon" aria-hidden="true"><path d="M12 2c-1.5 3-4 5.5-4 8.5a4 4 0 008 0C16 7.5 13.5 5 12 2z"/><path d="M12 12c-1 1.5-2 2.5-2 3.5a2 2 0 004 0c0-1-.5-2.5-2-3.5z"/></svg> 0 day streak</div>
         <div class="streak-milestone-msg" id="streak-milestone-msg" style="display:none"></div>
       </div>
     </div>
@@ -162,7 +261,8 @@
     <div class="results-scores">
       <div class="score-hero">
         <span class="score-hero-val" id="res-wpm">0</span>
-        <span class="score-hero-lbl">WPM</span>
+        <span class="score-hero-lbl">Net WPM</span>
+        <span class="score-hero-gross" id="res-gross-wpm" style="display:none"></span>
       </div>
       <div class="score-secondary">
         <div class="score-item">
@@ -180,7 +280,23 @@
       </div>
     </div>
 
-    <!-- Session fault keys -->
+    <!-- Lesson result banner -->
+    <div class="lesson-result-banner" id="lesson-result-banner" style="display:none">
+      <div class="lesson-result-content" id="lesson-result-content"></div>
+    </div>
+
+    <!-- XP & level row -->
+    <div class="xp-row" id="xp-row" style="display:none">
+      <div class="xp-earned" id="xp-earned-display">+0 XP</div>
+      <div class="xp-bar-wrap">
+        <div class="xp-bar-track">
+          <div class="xp-bar-fill" id="res-xp-fill"></div>
+        </div>
+        <div class="xp-level-info" id="xp-level-info">Level 1</div>
+      </div>
+      <div class="new-badges-row" id="new-badges-row"></div>
+    </div>
+
     <div class="fault-block" id="session-faults" style="display:none">
       <div class="fault-block-header">
         <span class="section-label">Keys that tripped you up</span>
@@ -194,10 +310,50 @@
       <canvas id="results-chart" height="90"></canvas>
     </div>
 
-    <div class="results-actions">
-      <button class="btn-primary" id="btn-practice-again">Practice Again</button>
-      <button class="btn-outline" id="btn-practice-adaptive">Drill Weak Keys</button>
-      <button class="btn-ghost" id="btn-go-home">Home</button>
+    <div class="results-actions" id="results-actions">
+      <!-- Buttons are rendered dynamically based on pass/fail + mode -->
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── LEADERBOARD ─────────────────────── -->
+<div id="screen-leaderboard" class="screen">
+  <div class="panel-layout">
+
+    <div class="panel-header">
+      <h2 class="panel-title">Leaderboard</h2>
+      <div class="lb-filters">
+        <button class="lb-filter-btn active" data-filter="global" id="lb-filter-global">Global</button>
+        <button class="lb-filter-btn" data-filter="friends" id="lb-filter-friends">Friends</button>
+      </div>
+    </div>
+
+    <div class="panel-body lb-body">
+      <div class="lb-friend-add" id="lb-friend-add">
+        <input type="text" id="lb-friend-input" class="lb-friend-input"
+          placeholder="Friend code (e.g. ABC123) or @username"
+          autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <button class="btn-outline" id="btn-add-friend">Add</button>
+      </div>
+      <div id="lb-content">
+        <div class="loading-state">Loading leaderboard…</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ──────────────────────── PROFILE ─────────────────────────── -->
+<div id="screen-profile" class="screen">
+  <div class="panel-layout">
+
+    <div class="panel-header">
+      <h2 class="panel-title">Profile</h2>
+    </div>
+
+    <div class="panel-body" id="profile-body">
+      <div class="loading-state">Loading profile…</div>
     </div>
 
   </div>
@@ -217,7 +373,6 @@
     </div>
 
     <div class="panel-body">
-
       <section class="setting-section">
         <h3 class="setting-section-title">Practice Mode</h3>
         <div class="option-grid" id="mode-grid">
@@ -226,12 +381,7 @@
           <button class="option-btn" data-mode="programming">Programming</button>
           <button class="option-btn" data-mode="custom">Custom Text</button>
         </div>
-        <textarea
-          id="custom-text-input"
-          class="custom-textarea"
-          placeholder="Paste your own text here…"
-          rows="3"
-        ></textarea>
+        <textarea id="custom-text-input" class="custom-textarea" placeholder="Paste your own text here…" rows="3"></textarea>
       </section>
 
       <section class="setting-section">
@@ -261,37 +411,19 @@
               <span class="toggle-label">Include punctuation</span>
               <span class="toggle-desc">Commas, periods, apostrophes in practice text</span>
             </div>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-punctuation" checked />
-              <span class="slider"></span>
-            </label>
+            <label class="toggle"><input type="checkbox" id="toggle-punctuation" checked /><span class="slider"></span></label>
           </div>
           <div class="toggle-row">
-            <div class="toggle-info">
-              <span class="toggle-label">Dark mode</span>
-            </div>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-dark" checked />
-              <span class="slider"></span>
-            </label>
+            <div class="toggle-info"><span class="toggle-label">Dark mode</span></div>
+            <label class="toggle"><input type="checkbox" id="toggle-dark" checked /><span class="slider"></span></label>
           </div>
           <div class="toggle-row">
-            <div class="toggle-info">
-              <span class="toggle-label">Sound feedback</span>
-            </div>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-sound" checked />
-              <span class="slider"></span>
-            </label>
+            <div class="toggle-info"><span class="toggle-label">Sound feedback</span></div>
+            <label class="toggle"><input type="checkbox" id="toggle-sound" checked /><span class="slider"></span></label>
           </div>
           <div class="toggle-row">
-            <div class="toggle-info">
-              <span class="toggle-label">Auto-launch on startup</span>
-            </div>
-            <label class="toggle">
-              <input type="checkbox" id="toggle-autostart" checked />
-              <span class="slider"></span>
-            </label>
+            <div class="toggle-info"><span class="toggle-label">Auto-launch on startup</span></div>
+            <label class="toggle"><input type="checkbox" id="toggle-autostart" checked /><span class="slider"></span></label>
           </div>
         </div>
       </section>
@@ -300,15 +432,13 @@
         <button class="btn-primary" id="btn-save-settings">Save Settings</button>
         <span class="saved-msg" id="settings-saved-msg">Saved</span>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- ──────────────────────── ANALYTICS ──────────────────────────── -->
+<!-- ──────────────────────── ANALYTICS ──────────────────────── -->
 <div id="screen-analytics" class="screen">
   <div class="panel-layout">
-
     <div class="panel-header">
       <button class="back-btn" id="btn-analytics-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -317,18 +447,15 @@
       </button>
       <h2 class="panel-title">Insights</h2>
     </div>
-
     <div class="panel-body" id="analytics-body">
       <div class="loading-state">Loading your data…</div>
     </div>
-
   </div>
 </div>
 
-<!-- ──────────────────────── HAND GUIDE ──────────────────────────── -->
+<!-- ──────────────────────── HAND GUIDE ──────────────────────── -->
 <div id="screen-hand-guide" class="screen">
   <div class="panel-layout">
-
     <div class="panel-header">
       <button class="back-btn" id="btn-hand-guide-back">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
@@ -337,30 +464,18 @@
       </button>
       <h2 class="panel-title">Hand Placement</h2>
     </div>
-
     <div class="panel-body hand-guide-body">
-
-      <p class="guide-intro">
-        Rest your fingers on the <strong>home row</strong>. Return to it after every keystroke.
-        Each colour represents one finger — highlighted keys are your current weak spots.
-      </p>
-
+      <p class="guide-intro">Rest your fingers on the <strong>home row</strong>. Return to it after every keystroke.</p>
       <div class="keyboard-wrap" id="keyboard-svg-container"></div>
-
       <div class="finger-legend" id="finger-legend"></div>
-
       <section class="setting-section">
         <h3 class="setting-section-title">Home Row</h3>
         <div class="home-row-visual">
-          <div class="home-key lp">A</div>
-          <div class="home-key lr">S</div>
-          <div class="home-key lm">D</div>
-          <div class="home-key li">F<span class="bump"></span></div>
+          <div class="home-key lp">A</div><div class="home-key lr">S</div>
+          <div class="home-key lm">D</div><div class="home-key li">F<span class="bump"></span></div>
           <div class="home-key gap-key">·</div>
-          <div class="home-key ri">J<span class="bump"></span></div>
-          <div class="home-key rm">K</div>
-          <div class="home-key rr">L</div>
-          <div class="home-key rp">;</div>
+          <div class="home-key ri">J<span class="bump"></span></div><div class="home-key rm">K</div>
+          <div class="home-key rr">L</div><div class="home-key rp">;</div>
         </div>
         <div class="home-row-labels">
           <span>L. Pinky</span><span>L. Ring</span><span>L. Middle</span>
@@ -368,7 +483,6 @@
           <span>R. Index</span><span>R. Middle</span><span>R. Ring</span><span>R. Pinky</span>
         </div>
       </section>
-
       <section class="setting-section tips-section">
         <h3 class="setting-section-title">Technique</h3>
         <ul class="tips-list">
@@ -380,7 +494,33 @@
           <li>After each key, return your finger to home position</li>
         </ul>
       </section>
+    </div>
+  </div>
+</div>
 
+<!-- ──────────────────────── KEY DRILL ──────────────────────── -->
+<div id="screen-key-drill" class="screen">
+  <div class="panel-layout">
+    <div class="panel-header">
+      <button class="back-btn" id="btn-key-drill-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
+      <h2 class="panel-title">Key Drill</h2>
+    </div>
+    <div class="panel-body">
+      <p class="guide-intro">Click any key to target it. Your historically weakest keys are highlighted in amber.</p>
+      <div class="drill-keyboard" id="drill-keyboard"></div>
+      <div class="drill-selection" id="drill-selection">
+        <span class="drill-selection-label">Selected</span>
+        <div class="drill-selected-keys" id="drill-selected-keys"></div>
+        <button class="drill-clear-btn" id="btn-drill-clear">Clear</button>
+      </div>
+      <div class="drill-actions">
+        <button class="btn-primary" id="btn-start-key-drill" disabled>Start Drill</button>
+        <button class="btn-ghost" id="btn-drill-auto-select">Auto-select weak keys</button>
+      </div>
     </div>
   </div>
 </div>

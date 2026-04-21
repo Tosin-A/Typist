@@ -1,0 +1,47 @@
+name: Build Typist
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: macos-latest
+            artifact: Typist.dmg
+            script: bash build_macos.sh
+          - os: windows-latest
+            artifact: Typist.exe
+            script: build_windows.bat
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pyinstaller
+
+      - name: Build (macOS)
+        if: runner.os == 'macOS'
+        run: bash build_macos.sh
+
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: build_windows.bat
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Typist-${{ matrix.os }}
+          path: dist/${{ matrix.artifact }}
+          if-no-files-found: warn

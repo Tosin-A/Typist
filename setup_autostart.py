@@ -33,17 +33,19 @@ def _parse_time() -> tuple[int, int]:
     return DEFAULT_HOUR, DEFAULT_MINUTE
 
 
-def _python_path() -> str:
-    """Prefer the venv Python if it exists alongside this script."""
+APP_BUNDLE = "/Applications/Typist.app"
+
+
+def _launch_program_args() -> list[str]:
+    """Use the installed .app if available, otherwise fall back to python main.py."""
+    if os.path.isdir(APP_BUNDLE):
+        return ["/usr/bin/open", "-a", "Typist"]
+    # Fallback: run via venv Python
     base = os.path.dirname(os.path.abspath(__file__))
     venv_python = os.path.join(base, ".venv", "bin", "python3")
-    if os.path.exists(venv_python):
-        return venv_python
-    return sys.executable
-
-
-def _script_path() -> str:
-    return os.path.abspath(os.path.join(os.path.dirname(__file__), "main.py"))
+    python = venv_python if os.path.exists(venv_python) else sys.executable
+    script = os.path.abspath(os.path.join(base, "main.py"))
+    return [python, script]
 
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -56,13 +58,11 @@ def _macos_plist_path() -> str:
 
 def _install_macos() -> None:
     plist_path = _macos_plist_path()
-    python = _python_path()
-    script = _script_path()
+    args = _launch_program_args()
     hour, minute = _parse_time()
 
-    # StartCalendarInterval is the key trick:
-    # launchd runs missed jobs the moment the machine wakes from sleep,
-    # so this fires at the scheduled time OR on the first wake after it.
+    args_xml = "\n".join(f"        <string>{a}</string>" for a in args)
+
     plist_content = textwrap.dedent(f"""\
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -73,8 +73,7 @@ def _install_macos() -> None:
             <string>{PLIST_LABEL}</string>
             <key>ProgramArguments</key>
             <array>
-                <string>{python}</string>
-                <string>{script}</string>
+{args_xml}
             </array>
             <key>StartCalendarInterval</key>
             <dict>
@@ -115,18 +114,16 @@ def _remove_macos() -> None:
 # ──────────────────────────────────────────────────────────────────────────────
 
 def _install_windows() -> None:
-    python = _python_path()
-    script = _script_path()
+    args = _launch_program_args()
+    tr = " ".join(f'\\"{a}\\"' for a in args)
     hour, minute = _parse_time()
     start_time = f"{hour:02d}:{minute:02d}"
 
-    # Task Scheduler with /sc daily + /ri (run immediately if missed)
-    # covers both fresh boot and wake from sleep.
     cmd = (
         f'schtasks /create /f /tn "{APP_NAME}" '
-        f'/tr \\"{python}\\" \\"{script}\\" '
+        f'/tr "{tr}" '
         f'/sc daily /st {start_time} '
-        f'/ru "" '          # run as current user
+        f'/ru ""'
     )
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
     if result.returncode == 0:

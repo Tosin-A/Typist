@@ -7,3 +7,6 @@ venv/
 ~/.typist/
 *.sqlite
 *.db
+build/
+dist/
+*.spec
