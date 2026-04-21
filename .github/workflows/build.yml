@@ -12,10 +12,12 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            artifact: Typist.dmg
+            artifact_path: dist/Typist.dmg
+            artifact_name: Typist.dmg
             script: bash build_macos.sh
           - os: windows-latest
-            artifact: Typist.exe
+            artifact_path: dist/Typist/Typist.exe
+            artifact_name: Typist.exe
             script: build_windows.bat
 
     runs-on: ${{ matrix.os }}
@@ -43,5 +45,38 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Typist-${{ matrix.os }}
-          path: dist/${{ matrix.artifact }}
+          path: ${{ matrix.artifact_path }}
           if-no-files-found: warn
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download macOS artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Typist-macos-latest
+          path: release/
+
+      - name: Download Windows artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: Typist-windows-latest
+          path: release/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Typist ${{ github.ref_name }}
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+          files: |
+            release/Typist.dmg
+            release/Typist.exe

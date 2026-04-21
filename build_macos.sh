@@ -3,8 +3,12 @@ set -e
 
 echo "▸ Building Typist.app for macOS…"
 
-# Use the venv Python so all dependencies are available
-PYTHON=".venv/bin/python3.14"
+# Use the venv Python locally; fall back to system python3 in CI
+if [ -f ".venv/bin/python3" ]; then
+  PYTHON=".venv/bin/python3"
+else
+  PYTHON="python3"
+fi
 
 # Install PyInstaller into the venv if needed
 $PYTHON -m pip install pyinstaller --quiet
