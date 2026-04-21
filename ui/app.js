@@ -32,6 +32,8 @@ const API = {
   getLeaderboard(p)          { return this._call("get_leaderboard", p); },
   addFriend(p)               { return this._call("add_friend", p); },
   searchUsers(p)             { return this._call("search_users", p); },
+  checkForUpdate()           { return this._call("check_for_update"); },
+  openReleasesPage()         { return this._call("open_releases_page"); },
 };
 
 // ── Browser stubs ─────────────────────────────────────────────
@@ -2189,11 +2191,32 @@ async function boot() {
     showScreen("onboarding");
   }
 
+  // Non-blocking update check — runs in background after UI is ready
+  checkForUpdate();
+
   console.log(
     "%cTypist 2.0",
     "font-size:28px;font-weight:900;color:#4d7de8;font-family:'Manrope',system-ui",
   );
   console.log("%cBuilt for people who type with intent.", "color:#7ba4f0;font-size:13px");
+}
+
+async function checkForUpdate() {
+  try {
+    const raw = await API.checkForUpdate();
+    const res = typeof raw === "string" ? JSON.parse(raw) : raw;
+    if (res?.has_update) {
+      const banner = document.getElementById("update-banner");
+      const text   = document.getElementById("update-banner-text");
+      text.textContent = `Typist ${res.latest_version} is available (you have ${res.current_version}).`;
+      banner.classList.remove("hidden");
+      document.body.classList.add("has-update");
+    }
+  } catch (_) {}
+}
+
+function openReleasesPage() {
+  API.openReleasesPage();
 }
 
 window.addEventListener("pywebviewready", boot);

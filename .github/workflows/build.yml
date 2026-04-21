@@ -14,11 +14,9 @@ jobs:
           - os: macos-latest
             artifact_path: dist/Typist.dmg
             artifact_name: Typist.dmg
-            script: bash build_macos.sh
           - os: windows-latest
             artifact_path: dist/Typist/Typist.exe
             artifact_name: Typist.exe
-            script: build_windows.bat
 
     runs-on: ${{ matrix.os }}
 
@@ -33,12 +31,27 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt pyinstaller
 
+      - name: Inject version from tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python -c "
+          import re
+          f = 'app/version.py'
+          v = '${VERSION}'
+          content = open(f).read()
+          content = re.sub(r'__version__ = \".*?\"', f'__version__ = \"{v}\"', content)
+          open(f, 'w').write(content)
+          "
+
       - name: Build (macOS)
         if: runner.os == 'macOS'
         run: bash build_macos.sh
 
       - name: Build (Windows)
         if: runner.os == 'Windows'
+        shell: cmd
         run: build_windows.bat
 
       - name: Upload artifact

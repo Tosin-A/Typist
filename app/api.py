@@ -552,6 +552,23 @@ class Api:
     # Quit / window
     # ------------------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # Updates
+    # ------------------------------------------------------------------
+
+    def check_for_update(self) -> str:
+        from app.updater import check_for_update
+        return json.dumps(check_for_update())
+
+    def open_releases_page(self) -> None:
+        import webbrowser
+        from app.updater import RELEASES_URL
+        webbrowser.open(RELEASES_URL)
+
+    # ------------------------------------------------------------------
+    # Quit / window
+    # ------------------------------------------------------------------
+
     def quit_app(self) -> None:
         import webview
         webview.windows[0].destroy()

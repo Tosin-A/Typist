@@ -11,6 +11,13 @@
 </head>
 <body class="dark">
 
+<!-- ──────────────────── UPDATE BANNER ──────────────────── -->
+<div id="update-banner" class="update-banner hidden">
+  <span id="update-banner-text">A new version of Typist is available.</span>
+  <button id="update-banner-btn" onclick="openReleasesPage()">Download update</button>
+  <button class="update-banner-close" onclick="document.getElementById('update-banner').classList.add('hidden')" aria-label="Dismiss">&#x2715;</button>
+</div>
+
 <!-- ──────────────────── PERSISTENT SIDEBAR ──────────────────── -->
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
