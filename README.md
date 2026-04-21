@@ -1,225 +1,161 @@
-# Typist — Daily Typing Practice 
+# Typist — Daily Typing Practice
 
-**A lightweight, offline-first desktop app for short daily typing practice.**  
-Feels like a frictionless morning habit: open your laptop, type for a minute or two, then move on—while tracking speed, accuracy, and improvement over time.
-
----
-
-## Overview
-
-Typist is a **native-feeling window** (pywebview) wrapped around a **minimal web UI** (HTML + CSS + vanilla JavaScript). There is **no server**, **no account**, and **no network**. Session data lives in plain JSON on disk so the app stays fast, private, and easy to maintain.
-
-**Goals**
-
-- **Default session under ~2 minutes** — short enough to run every day without guilt.
-- **Automatic launch** — optional macOS LaunchAgent / Windows `Run` registry entry so practice opens at login.
-- **Progress you can see** — WPM trend chart, streaks, and optional analytics on which keys trip you up.
-- **Adaptive difficulty** — difficulty tier follows a rolling average of recent performance; sessions can also **inject weak characters** into generated text so practice targets weak spots.
+**A lightweight desktop app for structured, daily typing practice.**  
+Short sessions. Adaptive difficulty. XP, levels, and a global leaderboard.
 
 ---
 
-## Problem & Solution
+## Download
 
-| Problem | Approach |
-|--------|----------|
-| Typing tutors are heavy, web-only, or full of ads | Single-purpose desktop app; runs offline; no browser tab clutter |
-| Hard to build a daily habit | Streaks, short sessions, optional startup launch, skip shortcuts |
-| Progress feels invisible | Local history + 30-day WPM chart + optional per-key error stats |
-| One size doesn’t fit all | Multiple modes, custom text, case/punctuation/session length settings |
+Go to the [**Releases**](https://github.com/Tosin-A/Typist/releases) page and download the file for your platform.
+
+| Platform | File |
+|----------|------|
+| macOS | `Typist.dmg` |
+| Windows | `Typist.exe` |
 
 ---
 
-## Features
+## Install
 
-### Core experience
+### macOS
 
-- **Clean minimal UI** with **dark** and **light** themes.
-- **Live metrics** while typing: **WPM**, **accuracy %**, **elapsed time**.
-- **Mistake highlighting** — incorrect characters are highlighted in real time.
-- **Auto-focus** — the typing field is ready as soon as the window opens.
-- **Skip** — **Escape** or “Skip” to exit without a long flow when you’re busy.
+1. Open `Typist.dmg`
+2. Drag **Typist** into your **Applications** folder
+3. Open **Finder → Applications**, right-click **Typist** → **Open**
+4. Click **Open** in the security dialog (required once — macOS flags apps not distributed through the App Store)
+
+> After the first launch you can open Typist normally from Applications or Spotlight.
+
+### Windows
+
+1. Double-click `Typist.exe`
+2. If Windows SmartScreen appears, click **More info** → **Run anyway**
+   (this appears for unsigned apps — it's a one-time prompt)
+3. Typist opens immediately — no installer needed
+
+---
+
+## Launch at startup (optional)
+
+Typist can open automatically each morning so it's ready when you sit down.
+
+### macOS
+
+```bash
+# Clone or navigate to the project folder, then:
+python setup_autostart.py              # launches at 8:00 AM by default
+python setup_autostart.py --time 07:30 # custom time
+python setup_autostart.py --remove     # unregister
+```
+
+### Windows
+
+```bash
+python setup_autostart.py
+python setup_autostart.py --remove
+```
+
+This registers a scheduled task (Task Scheduler) that opens Typist daily at the chosen time, or on first wake if the machine was asleep.
+
+> If you move the app, re-run `setup_autostart.py` from the new location to update the path.
+
+---
+
+## First launch
+
+1. **Pick a username** — used on the leaderboard (3–20 chars, letters/numbers/underscores)
+2. **Baseline test** — a short 30-second typing sample to calibrate your starting difficulty
+3. **Track recommendation** — Typist suggests General or Developer track based on your speed
+4. You land on the **Learn** screen, ready to start Lesson 1
+
+---
+
+## What's inside
+
+### Curriculum
+- **General track** (20 lessons) — sentences and common words, progressing from beginner to advanced
+- **Developer track** (15 lessons) — symbols, brackets, real code patterns
+- **Code track** (10 lessons) — Python, JavaScript, and terminal/Git commands
+- Lessons unlock in sequence; targets adapt to your baseline WPM
+
+### Gamification
+- **XP** earned every session — more for lessons, speed tests, and hitting targets
+- **Levels** (1–100) and **Ranks** — Novice → Apprentice → Practitioner → Expert → Master → Legend
+- **14 badges** — streaks, WPM milestones, track completion, leaderboard placement
 
 ### Practice modes
+- **Sentences** — curated passages
+- **Common words** — high-frequency English
+- **Programming syntax** — JS/Python-style snippets
+- **Custom text** — paste your own material
+- **Adaptive drill** — weighted toward characters you mistype most
+- **Speed test** — 60-second timed run
 
-- **Real sentences** — curated quotes / sentence-style passages.
-- **Common words** — high-frequency English words.
-- **Programming syntax** — short snippets (JS/Python-style lines).
-- **Custom text** — paste your own material (passages, notes, docs).
-- **Adaptive drill** (API) — heavier emphasis on characters you’ve mistyped recently.
-- **Speed test** (API) — longer passage for a **60-second** speed measurement (no character adaptation).
-
-### Progress & motivation
-
-- **30-day WPM chart** — smooth canvas-based line chart (no charting library).
-- **Daily streak** — consecutive days with a completed session.
-- **Quote of the day** — deterministic per calendar day so it’s stable but fresh each day.
-- **Sound feedback** (optional) — keystroke / error / completion tones via **Web Audio API** (no audio files).
-
-### Intelligence & personalization
-
-- **Adaptive difficulty** — Beginner / Intermediate / Advanced from a **rolling 7-day average WPM**.
-- **Problem-character awareness** — recent sessions store **per-key error counts**; normal sessions can **mix those characters** into generated text (except programming mode, to preserve syntax).
-- **Analytics API** — aggregate key-error stats and accuracy history for dashboards or future UI.
-
-### System integration
-
-- **`setup_autostart.py`** — registers **macOS** LaunchAgent (`~/Library/LaunchAgents/`) or **Windows** `HKCU\...\Run\`; prefers `.venv` Python when present.
-- **`run.sh`** — launches the app with the project virtual environment.
+### Progress
+- 30-day WPM trend chart
+- Per-key error heatmap
+- Daily streak
+- Global and friends leaderboard
 
 ---
 
-## Tech Stack
+## Updates
 
-| Layer | Choice |
-|-------|--------|
-| **Shell / runtime** | Python 3.10+ |
-| **Desktop host** | [pywebview](https://pywebview.flowrl.com/) — native window + WebKit/Edge/CEF backend |
-| **UI** | **Vanilla** HTML, CSS, JavaScript (no React/Vue; minimal bundle, instant load) |
-| **Graphics** | HTML5 Canvas for charts |
-| **Audio** | Web Audio API (oscillators; no external assets) |
-| **Persistence** | JSON files under `~/.typist/` |
+When a new version is released, a banner appears inside the app with a download link. Click **Download update** to open the Releases page, then follow the install steps above.
 
 ---
 
-## Architecture
+## Run from source
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  main.py                                                 │
-│  pywebview.create_window( js_api=Api )                   │
-└──────────────────────────┬──────────────────────────────┘
-                           │
-         ┌─────────────────▼─────────────────┐
-         │  app/api.py — Api class              │
-         │  JSON in/out over JS bridge          │
-         └─────────────────┬─────────────────┘
-                           │
-    ┌──────────────────────┼──────────────────────┐
-    ▼                      ▼                      ▼
-app/content.py      app/difficulty.py      app/storage.py
-text generation     tier from rolling WPM   sessions, streak,
-+ adaptation        + labels                  settings, JSON
-```
+For developers or if you prefer not to use the packaged app.
 
-- **Frontend** (`ui/`) calls `window.pywebview.api.*` methods; responses are JSON strings.
-- **Backend** (`app/`) keeps generation logic and file I/O on the Python side so the same rules apply to CLI or future packaging.
-
----
-
-## Repository Layout
-
-```
-.
-├── main.py                 # Entry: window + pywebview.start()
-├── run.sh                  # Run with project .venv (chmod +x)
-├── setup_autostart.py      # Register / unregister login startup
-├── requirements.txt
-├── app/
-│   ├── api.py              # JS-exposed API (sessions, dashboard, analytics)
-│   ├── content.py          # Text generation + modes + adaptation hooks
-│   ├── difficulty.py     # Adaptive tier from recent WPM
-│   └── storage.py          # ~/.typist/data.json, settings.json
-├── ui/
-│   ├── index.html
-│   ├── styles.css
-│   └── app.js              # Typing engine, charts, routing, sound
-└── assets/words/
-    ├── common.txt
-    ├── programming.txt
-    └── quotes.txt
-```
-
----
-
-## Setup
-
-### 1. Clone and install
+**Requirements:** Python 3.10+, macOS or Windows
 
 ```bash
-cd /path/to/typist
+git clone https://github.com/Tosin-A/Typist.git
+cd Typist
 python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
-```
-
-### 2. Run
-
-```bash
 python main.py
-# or
-./run.sh
 ```
 
-### 3. Debug mode (optional)
+Debug mode (opens browser devtools):
 
 ```bash
 python main.py --debug
 ```
 
-### 4. Auto-launch at login (optional, run once)
+---
 
-```bash
-python setup_autostart.py
-```
+## Data & privacy
 
-Remove:
+All data is stored locally under `~/.typist/`:
 
-```bash
-python setup_autostart.py --remove
-```
+| File | Contents |
+|------|----------|
+| `data.json` | Sessions, streaks, XP, badges, lesson progress |
+| `settings.json` | Mode, theme, sound, session length, custom text |
 
-**Note:** macOS LaunchAgents point at a specific Python path and `main.py`. If you move the project folder, re-run `setup_autostart.py` from the new location.
+Leaderboard scores sync to a cloud database only when you complete a session and have an internet connection. No personal data beyond your chosen username is ever transmitted.
 
 ---
 
-## Data & Privacy
+## Tech stack
 
-All data is **local** under `~/.typist/`:
-
-| File | Purpose |
-|------|---------|
-| `data.json` | Session history, streaks, per-session key error stats |
-| `settings.json` | Mode, theme, sound, autostart preference, custom text, etc. |
-
-There is **no login**, **no cloud sync**, and **no telemetry** in this README’s scope.
-
----
-
-## API Surface (Python → JS)
-
-The `Api` class exposes methods consumed by the frontend (e.g. `get_dashboard`, `start_session`, `finish_session`, `get_settings`, `update_settings`). Additional methods such as `start_adaptive_session`, `start_speed_test`, and `get_analytics` support richer flows and future UI.
-
----
-
-## Requirements
-
-- **Python** 3.10+
-- **pywebview** ≥ 4.4 (see `requirements.txt`)
-- **macOS** or **Windows** (Linux generally works with pywebview + GTK/WebKit; autostart script is tailored for macOS/Windows)
-
----
-
-## Portfolio Use
-
-This project demonstrates:
-
-- **Desktop app packaging** without Electron’s full stack weight.
-- **Python ↔ JavaScript bridge** design for a thin native shell + rich UI.
-- **Offline-first** persistence and **privacy-by-default** design.
-- **Product thinking**: streaks, short sessions, skip paths, and adaptive difficulty.
-- **Performance-conscious UI**: no SPA framework, canvas charts, synthesized audio.
-
----
-
-## Possible Extensions
-
-- PyInstaller / briefcase bundle for a double-click `.app` / `.exe`
-- Optional sync to iCloud/Dropbox (user-owned)
-- More languages and keyboard layouts
-- Export history as CSV
+| Layer | Choice |
+|-------|--------|
+| Shell | Python 3.10+ |
+| Desktop host | [pywebview](https://pywebview.flowrl.com/) — native window, no Electron |
+| UI | Vanilla HTML / CSS / JavaScript |
+| Charts | HTML5 Canvas |
+| Audio | Web Audio API (no audio files) |
+| Local storage | JSON under `~/.typist/` |
+| Cloud | Supabase (leaderboard only) |
 
 ---
 
 ## License
 
-Specify your license here (e.g. MIT) if you publish the repo publicly.
+MIT
