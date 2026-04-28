@@ -1401,9 +1401,10 @@ async function initProfile() {
 
 function renderProfile(data, body) {
   const user        = data.user || {};
-  const lp          = data.level_progress || {};
+  const gamification = data.gamification || {};
+  const lp          = gamification.level_progress || data.level_progress || {};
   const stats       = data.stats || {};
-  const earnedBadges = new Set(data.badges || []);
+  const earnedBadges = new Set(gamification.badges || data.badges || []);
   const keyErrors   = data.key_errors || {};
   const progress    = data.progress || [];
 
@@ -1428,7 +1429,7 @@ function renderProfile(data, body) {
       <div class="profile-hero-info">
         <div class="profile-username-row">
           <span class="profile-username">${user.username || "—"}</span>
-          <span class="profile-rank-badge">${data.rank || "Novice"}</span>
+          <span class="profile-rank-badge">${gamification.rank || data.rank || "Novice"}</span>
         </div>
         ${user.friend_code ? `<div class="profile-friend-code">Friend code: <span>${user.friend_code}</span></div>` : ''}
       </div>
@@ -1436,7 +1437,7 @@ function renderProfile(data, body) {
 
     <div class="profile-xp-block">
       <div class="profile-xp-top">
-        <span class="profile-level">Level ${lp.level || data.level || 1}</span>
+        <span class="profile-level">Level ${lp.level || gamification.level || data.level || 1}</span>
         <span class="profile-xp-nums">${lp.xp_in_level || 0} / ${lp.xp_to_next || 150} XP</span>
       </div>
       <div class="profile-xp-bar-track">
@@ -1446,7 +1447,7 @@ function renderProfile(data, body) {
 
     <div class="profile-stats-row">
       <div class="profile-stat">
-        <span class="profile-stat-val">${stats.sessions || 0}</span>
+        <span class="profile-stat-val">${stats.total_sessions || stats.sessions || 0}</span>
         <span class="profile-stat-lbl">Sessions</span>
       </div>
       <div class="profile-stat">
@@ -1913,6 +1914,10 @@ document.addEventListener("keydown", e => {
     } else if (["settings","analytics","hand-guide","key-drill"].includes(current)) {
       showScreen("home"); initHome();
     }
+  }
+  if (e.key === "Enter" && current === "results") {
+    e.preventDefault();
+    document.querySelector("#results-actions .btn-primary")?.click();
   }
 });
 

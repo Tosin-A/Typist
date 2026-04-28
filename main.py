@@ -26,9 +26,19 @@ def main() -> None:
         frameless=False,
         easy_drag=False,
         fullscreen=True,
+        minimized=False,
     )
 
+    def _ensure_window_is_visible() -> None:
+        # Some launch paths can reopen the app in a minimized state.
+        # Force restore so native fullscreen is visible immediately.
+        try:
+            window.restore()
+        except Exception:
+            pass
+
     webview.start(
+        func=_ensure_window_is_visible,
         debug="--debug" in sys.argv,
         gui=None,
     )
